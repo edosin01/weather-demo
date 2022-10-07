@@ -6,24 +6,20 @@ import { FormControl, Button, InputLabel, Input } from '@mui/material';
 function App() {
 
   const [query, setQuery] = useState('');
-  const {data: {weather}, actions} = useWeather();
+  const {data: {weather, err}, actions} = useWeather();
 
-  const onSuccess = () => {
-    console.log("Action: Success");
+  const onSuccess = (res) => {
+    console.log("Response: ", res);
   }
 
-  const onError = () => {
-    console.log("Action: Error");
+  const onError = (err) => {
+    console.log("Error: ", err);
   }
 
   const handleClick = (e) => {
     e.preventDefault();
     actions.getWeather(query, onSuccess, onError);
   }
-
-  useEffect(() => {
-    console.log(weather.weather);
-  }, [weather]);
   
   return (
     <div className='container'>
@@ -40,7 +36,7 @@ function App() {
           </FormControl>
         </div>
         {
-          weather.main && (
+          (weather.main && !err) ? (
             <div className='weather'>
               <h1 className="city">
                 {weather.name}
@@ -58,6 +54,8 @@ function App() {
                 {`${weather.weather[0].main.toUpperCase()}: ${weather.weather[0].description.toUpperCase()}`}
               </p>
             </div>
+          ) : (
+            <p>Không có thành phố</p>
           )
         }
       </div>

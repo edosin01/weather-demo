@@ -4,7 +4,7 @@ import { getWeatherError, getWeatherSuccess, GET_WEATHER_STATE_START } from "../
 
 function* getWeather(action) {
     try {
-        yield console.log(1);
+        console.log(action.type);
         const response = yield call(() => fetchWeather(action.payload));
 
         yield put(getWeatherSuccess(response));
@@ -12,7 +12,6 @@ function* getWeather(action) {
             action.onSuccess(response);
     }
     catch (error) {
-        yield console.log(error);
         yield put(getWeatherError());
         if(action?.onError)
             action.onError(error);
